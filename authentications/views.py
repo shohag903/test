@@ -1,0 +1,31 @@
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate,login,logout
+from janggo.settings import MESSAGE_TAGS
+from django.contrib import messages
+
+
+def authlogin(request):
+       if request.method == 'POST':
+              name=request.POST['name']
+              password=request.POST['password']
+              user=authenticate(request, username = name, password = password)
+              if user is not None:
+                     login(request,user)
+                     return redirect('employee.profile')
+              messages.error(request, 'Email or password invalid !')
+       return render(request,'authentication/login.html')         
+
+
+def authregistration(request):
+       return render(request,'authentication/registration.html')
+
+
+
+
+def authforgotpassword(request):
+       return render(request,'authentication/forgotpassword.html')
+
+def userlogout(request):
+       logout(request)
+       messages.success(request, 'Successfully Logout !')
+       return redirect('login')
